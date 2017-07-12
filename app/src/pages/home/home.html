@@ -1,0 +1,120 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Invoice
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+ <form [formGroup]="invoiceForm" (ngSubmit)="submitForm(invoiceForm)"> 
+    <ion-grid>
+  <ion-row>
+    <ion-col col-6>
+      <ion-list>
+        <ion-item>
+          <ion-label fixed>Client Name</ion-label>
+          <ion-input type="text" formControlName="client_fullname" ></ion-input>
+        </ion-item>
+
+        <ion-item>
+           <ion-label fixed>Street</ion-label>
+          <ion-input type="text" formControlName="street"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>City</ion-label>
+          <ion-input type="text" formControlName="zip2"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>State</ion-label>
+          <ion-input type="text" formControlName="zip3" ></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label fixed>Zip</ion-label>
+          <ion-input type="text" formControlName="zip"></ion-input>
+        </ion-item>
+
+      </ion-list>
+    </ion-col>
+
+    <ion-col col-6>
+      <ion-list>
+
+        <ion-item>
+          <ion-label fixed>Invoice #</ion-label>
+          <ion-input type="text" formControlName="invoice_number"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>Date of Issue</ion-label>
+          <ion-datetime displayFormat="MMM DD, YYYY" formControlName="date_of_issue"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Paid</ion-label>
+          <ion-select formControlName="paid">
+            <ion-option value="no">NO</ion-option>
+            <ion-option value="yes">YES</ion-option>
+          </ion-select>
+        </ion-item>
+
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+  <ion-grid>
+    <ion-row class="table-header">
+      <ion-col col-8>Time Entry Notes</ion-col>
+      <ion-col col-4>Line Total</ion-col>
+    </ion-row>
+
+    <ion-row formArrayName="items">
+        <ion-col col-12 *ngFor="let item of invoiceForm.controls.items.controls; let i = index">
+          <ion-row [formGroupName]="i">
+            <ion-col col-8 class="items-block" >
+              <ion-item class="items-block-right">
+                <ion-input type="text" formControlName="title" ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col col-4 class="items-block">
+              <ion-item class="line-total-columns">
+                <ion-input type="text" placeholder="0.00" formControlName="val" #box (blur)="onBlur(box.value)"></ion-input>
+              </ion-item>
+            </ion-col>
+                     
+          </ion-row>
+        </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col col-4>
+        <button type="button" (click)="addItem()" ion-button>Add Line</button>
+      </ion-col>
+
+      <ion-col col-6 offset-2 class="total-block">
+        
+        <ion-row class="balance">
+          <ion-col col-8><p>Balance Due (USD)</p></ion-col>
+            <ion-col col-4>
+             <ion-input type="text" formControlName="balance"></ion-input>
+            </ion-col>
+        </ion-row>
+        
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="generate-invoice-button">
+      <ion-col col-3 offset-8>
+        <button type="submit" color="secondary" ion-button>Generate Invoice</button>
+      </ion-col>
+    </ion-row>
+</ion-grid>
+ </form>
+
+</ion-content>
+
+
