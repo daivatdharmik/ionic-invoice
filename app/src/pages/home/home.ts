@@ -26,6 +26,7 @@ export class HomePage {
   //image = require('../../assets/second-logo.png')
   constructor(public navCtrl: NavController, private formBuilder: FormBuilder, public loadingCtrl: LoadingController) {
     let balance: number = 0;
+    let amount_paid: number = 0;
     this.invoiceForm = this.formBuilder.group({
       client_fullname: ['', [Validators.required]],
       paid: ['no'],
@@ -36,6 +37,7 @@ export class HomePage {
       zip2: ['', [Validators.required]],//city
       zip3: ['', [Validators.required]],//state
       balance: [balance.toFixed(2), [Validators.required]],
+      amount: [amount_paid.toFixed(2), [Validators.required]],
       items: this.formBuilder.array([
         this.initializeItems()
       ]),
@@ -68,6 +70,11 @@ export class HomePage {
     console.log('total', total);
     this.invoiceForm.controls['balance'].setValue(total)
   }
+
+  // onAmountPaid(value){
+  //   let amount = parseInt(value);
+  //   this.invoiceForm.controls['amount_paid'].setValue(amount)
+  // }
 
   getTotal(value){
     console.log('value', value)
@@ -229,7 +236,7 @@ export class HomePage {
     ];
     let rows_for_total = [
       {name:"Total", total: `${form.value.balance}`},
-      {name: "Amount Paid", total: "0.00"}
+      {name: "Amount Paid", total: `${form.value.amount}`}
     ];
 
     doc.autoTable(columns_for_total, rows_for_total, {
@@ -264,7 +271,7 @@ export class HomePage {
       ];
       
     
-    let rows_for_balance = [{name:"Balance Due (USD)", total: `$${balance}`} ];
+    let rows_for_balance = [{name:"Balance Due (USD)", total: `$${balance - form.value.amount}`} ];
 
     doc.autoTable(columns_for_balance, rows_for_balance, {
       startY: doc.autoTable.previous.finalY + 2,
